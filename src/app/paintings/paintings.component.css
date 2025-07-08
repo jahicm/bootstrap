@@ -1,0 +1,4 @@
+.card-img-small {
+  height: 100px;
+  object-fit: cover;
+}
