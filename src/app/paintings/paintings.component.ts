@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { CommonModule } from '@angular/common';
+import { PaintingserviceService } from '../services/paintingservice.service';
 
 @Component({
   selector: 'app-paintings',
@@ -10,16 +11,43 @@ import { CommonModule } from '@angular/common';
 })
 export class PaintingsComponent implements OnInit {
   products!: Product[];
+  filteredProducts!: Product[];
+  sortOrder: string = '';
+  sortLabel: string = 'Select by Price';
+  constructor(private productService: PaintingserviceService) { }
 
   ngOnInit(): void {
-   this.products = [
-  { id: 1, name: 'test1', price: 61.50, image_url: 'assets/images/Product_01.jpg' },
-  { id: 2, name: 'test2', price: 332.60, image_url: 'assets/images/Product_02.jpg' },
-  { id: 3, name: 'test3', price: 303.66, image_url: 'assets/images/Product_03.jpg' },
-  { id: 4, name: 'test4', price: 34.88, image_url: 'assets/images/Product_04.jpg' },
-  { id: 5, name: 'test5', price: 355.15, image_url: 'assets/images/Product_05.jpg' },
-  { id: 6, name: 'test6', price: 356.0, image_url: 'assets/images/Product_06.jpg' },
-];
-
+    this.productService.getProducts().subscribe({
+      next: (products: Product[]) => {
+        console.log('Products loaded:', products);
+        this.products = products;
+        this.filteredProducts = products;
+      },
+      error: (err) => {
+        // You can show a user-friendly message or log the error
+        console.error('Failed to load products:', err);
+        this.products = [];
+        this.filteredProducts = [];
+      }
+    });
   }
+
+  search(event: Event): void {
+    let searchTerm = (event.target as HTMLInputElement).value;
+    searchTerm = searchTerm.toLowerCase();
+    this.filteredProducts = this.products.filter(product =>
+      product.name.toLowerCase().startsWith(searchTerm)
+    );
+  }
+
+  sortByPrice(order: 'asc' | 'desc'): void {
+    if (order === 'asc') {
+      this.filteredProducts = [...this.filteredProducts].sort((a, b) => a.price - b.price);
+      this.sortLabel = 'Low to High';
+    } else {
+      this.filteredProducts = [...this.filteredProducts].sort((a, b) => b.price - a.price);
+      this.sortLabel = 'High to Low';
+    }
+  }
+
 }
