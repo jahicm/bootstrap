@@ -18,10 +18,10 @@ export class PaintingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe({
-      next: (products: Product[]) => {
-        console.log('Products loaded:', products);
-        this.products = products;
-        this.filteredProducts = products;
+      next: (product: Product[]) => {
+        console.log('Products loaded:', product);
+        this.products = product;
+        this.filteredProducts = product.slice(); // Initialize filteredProducts with all products
       },
       error: (err) => {
         // You can show a user-friendly message or log the error
