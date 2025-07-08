@@ -13,7 +13,7 @@ export class PaintingsComponent implements OnInit {
   products!: Product[];
   filteredProducts!: Product[];
   sortOrder: string = '';
-  sortLabel: string = 'Select by Price';
+  sortLabel: string = 'Select All';
   constructor(private productService: PaintingserviceService) { }
 
   ngOnInit(): void {
@@ -40,13 +40,17 @@ export class PaintingsComponent implements OnInit {
     );
   }
 
-  sortByPrice(order: 'asc' | 'desc'): void {
+  sortByPrice(order: 'asc' | 'desc' | 'default'): void {
     if (order === 'asc') {
-      this.filteredProducts = [...this.filteredProducts].sort((a, b) => a.price - b.price);
+      this.filteredProducts.sort((a, b) => a.price - b.price);
       this.sortLabel = 'Low to High';
-    } else {
-      this.filteredProducts = [...this.filteredProducts].sort((a, b) => b.price - a.price);
+    } else if(order == 'desc'){
+      this.filteredProducts.sort((a, b) => b.price - a.price);
       this.sortLabel = 'High to Low';
+    }else
+    {
+      this.filteredProducts = this.products.slice();
+      this.sortLabel ='Select All';
     }
   }
 

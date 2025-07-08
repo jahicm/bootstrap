@@ -25,6 +25,8 @@
             {{ sortLabel }}
           </button>
           <ul class="dropdown-menu">
+             <li><a class="dropdown-item" href="#" (click)="sortByPrice('default'); $event.preventDefault()">Select All</a>
+            </li>
             <li><a class="dropdown-item" href="#" (click)="sortByPrice('desc'); $event.preventDefault()">High to Low</a>
             </li>
             <li><a class="dropdown-item" href="#" (click)="sortByPrice('asc'); $event.preventDefault()">Low to High</a>
