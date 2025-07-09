@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../models/product';
+import { Product } from '../models/Product';
 import { CommonModule } from '@angular/common';
 import { PaintingserviceService } from '../services/paintingservice.service';
 
@@ -21,10 +21,9 @@ export class PaintingsComponent implements OnInit {
       next: (product: Product[]) => {
         console.log('Products loaded:', product);
         this.products = product;
-        this.filteredProducts = product.slice(); // Initialize filteredProducts with all products
+        this.filteredProducts = product.slice(); 
       },
       error: (err) => {
-        // You can show a user-friendly message or log the error
         console.error('Failed to load products:', err);
         this.products = [];
         this.filteredProducts = [];

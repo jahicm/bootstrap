@@ -1,1 +1,72 @@
-<p>tdf works!</p>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container fluid">
+        <div class="row">
+            <h1>Angular Template Driven Form</h1>
+            <div class="col-md-3">
+
+                <form #addressForm="ngForm" (ngSubmit)="onSubmit(addressForm)">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="name" name="name" ngModel required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" ngModel required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select w-auto" name="gender" ngModel required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="street" class="form-label">Street</label>
+                        <input type="text" class="form-control" id="street" name="street" ngModel required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="street" name="city" ngModel required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="number" class="form-label">Number</label>
+                        <input type="text" class="form-control" id="number" name="number" ngModel required
+                            style="width: 100px;" ngModel required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="postcode" class="form-label">Postcode</label>
+                        <input type="text" class="form-control" id="postcode" name="postcode" ngModel required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country</label>
+                        <select class="form-select w-auto" id="country" name="country" ngModel required>
+                            <option value="">Select Country</option>
+                            <option value="germany">Germany</option>
+                            <option value="switzerland">Switzerland</option>
+                            <option value="austria">Austria</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="!addressForm.valid">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000/bootstrap/paintings/'
+  apiBaseUrl: 'http://localhost:3000/bootstrap'
 };
