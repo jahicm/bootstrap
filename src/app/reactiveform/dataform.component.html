@@ -27,10 +27,13 @@
             <div class="d-flex gap-2 align-items-center">
               <input id="blutzuckerwert" type="number" formControlName="blutzuckerwert" class="form-control"
                 style="max-width: 100px;" />
-              <select formControlName="einheit" class="form-select" style="max-width: 100px;">
-                <option value="mg/dL">mg/dL</option>
-                <option value="mmol/L">mmol/L</option>
-              </select>
+              <div class="btn-group" role="group" aria-label="Einheit">
+                <input type="radio" class="btn-check" name="einheit" id="btnradio1" formControlName="einheit" autocomplete="off" checked value="mg/dL">
+                <label class="btn btn-outline-primary" for="btnradio1">mg/dL</label>
+                <input type="radio" class="btn-check" name="einheit" id="btnradio2" formControlName="einheit" autocomplete="off" value="mmol/L">
+                <label class="btn btn-outline-primary" for="btnradio2">mmol/L</label>
+
+              </div>
             </div>
           </div>
 

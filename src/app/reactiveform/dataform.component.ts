@@ -31,7 +31,7 @@ export class DataFormComponent {
       symptomeSchweregrad: ['leicht'],
       stimmung: ['gut'],
       notizen: [''],
-      einheit: ['', Validators.required]
+      einheit: ['mmol/L']
     });
   }
 
@@ -39,6 +39,8 @@ export class DataFormComponent {
     if (this.dataForm.valid) {
       const einheit = this.dataForm.get('einheit')?.value;
       const blutzucker = this.dataForm.get('blutzuckerwert')?.value;
+      console.log('Einheit:', einheit+" Blutzuckerwert:", blutzucker);
+
 
       if (
         (einheit === 'mg/dL' && (blutzucker < 20 || blutzucker > 700)) ||
