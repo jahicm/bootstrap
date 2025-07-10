@@ -1,0 +1,24 @@
+ body {
+      background-color: #f8f9fa;
+    }
+
+    .dashboard-card {
+      border-radius: 10px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .dashboard-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .chart-placeholder {
+      background-color: #e9ecef;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      color: #6c757d;
+      font-style: italic;
+    }
