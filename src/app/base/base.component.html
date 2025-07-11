@@ -38,16 +38,28 @@
           <h6 class="text-primary">Add New Reading</h6>
           <form>
             <input type="text" class="form-control mb-2" placeholder="Enter value" />
+            <div class="mb-3">
+              <label for="date-timeOfMeal" class="form-label">Time:</label>
+              <input type="datetime-local" class="form-control" id="date-timeOfMeal"
+                formControlName="date-timeOfMeal" />
+            </div>
+            <div>
+              <select>
+                <option>Fasting</option>
+                <option>Post-Breakfast</option>
+                <option>Before Sleep</option>
+              </select>
+            </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="unit" id="mg" value="mg/dL" />
+              <input class="form-check-input" type="radio" name="unit" id="mg" value="mg/dL" checked/>
               <label class="form-check-label" for="mg">mg/dL</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="unit" id="mmol" value="mmol/L" />
+              <input class="form-check-input" type="radio" name="unit" id="mmol" value="mmol/L"/>
               <label class="form-check-label" for="mmol">mmol/L</label>
             </div>
             <button class="btn btn-primary btn-sm mt-2">
-              <i class="bi bi-plus-circle"></i> Add
+              <i class="bi bi-plus-circle"></i> Save Reading
             </button>
           </form>
         </div>
@@ -130,7 +142,7 @@
 
       <!-- Carbs Intake -->
       <div class="col-md-4">
-        <div class="card border-primary shadow-sm dashboard-card">
+        <div class="card shadow-sm dashboard-card">
           <div class="card-body">
             <h5 class="card-title text-primary">HbA1c Prediction</h5>
             <p class="display-6 fw-bold text-success">
