@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../models/Product';
+import { Product } from '../models/product';
 import { CommonModule } from '@angular/common';
 import { PaintingserviceService } from '../services/paintingservice.service';
 

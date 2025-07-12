@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Data } from '../models/Data';
+import { Data } from '../models/data';
 import { DataService } from '../services/dataservice.service';
 
 
