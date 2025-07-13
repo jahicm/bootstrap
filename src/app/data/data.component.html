@@ -12,7 +12,7 @@
 <body>
     <div class="container-fluid ">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <div class="card  mt-5">
                     <div class="card-header">
                         <h5>Blood Sugar Measurements</h5>
@@ -26,12 +26,12 @@
                                 Sort by Date
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByDate('default'); $event.preventDefault()">Default</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByDate('desc'); $event.preventDefault()">Descending</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByDate('asc'); $event.preventDefault()">Ascending</a></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByDate('default'); $event.preventDefault()">Default</button></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByDate('desc'); $event.preventDefault()">Descending</button></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByDate('asc'); $event.preventDefault()">Ascending</button></li>
                             </ul>
                         </div>
                         <div class="dropdown">
@@ -41,12 +41,14 @@
                                 Sort by Value
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByValue('default'); $event.preventDefault()">Default</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByValue('low'); $event.preventDefault()">High to Low</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByValue('high'); $event.preventDefault()">Low to High</a></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByValue('default')">Default</button>
+                                </li>
+                                <li><button class="dropdown-item" type="button" (click)="sortByValue('low')">High to
+                                        Low</button>
+                                </li>
+                                <li><button class="dropdown-item" type="button" (click)="sortByValue('high')">Low to
+                                        High</button></li>
                             </ul>
                         </div>
                         <div class="dropdown">
@@ -56,20 +58,28 @@
                                 Filter by Status
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByStatus('default'); $event.preventDefault()">Default</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByStatus('high'); $event.preventDefault()">High</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByStatus('norm'); $event.preventDefault()">Normal</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByStatus('elev'); $event.preventDefault()">Elevated</a></li>
-                                <li><a class="dropdown-item" href="#"
-                                        (click)="sortByStatus('low'); $event.preventDefault()">Low</a></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByStatus('default')">Default</button></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByStatus('high')">High</button></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByStatus('norm')">Normal</button></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByStatus('elev')">Elevated</button></li>
+                                <li><button class="dropdown-item" type="button"
+                                        (click)="sortByStatus('low')">Low</button></li>
                             </ul>
+
                         </div>
                     </div>
-
+                    <!-- Date Pickers and Generate Button -->
+                    <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="fromDate" name="fromDate"
+                            placeholder="From Date">
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="toDate" name="toDate"
+                            placeholder="To Date">
+                        <button class="btn btn-primary btn-sm" (click)="generateGraph()">Generate Graph</button>
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover text-center">
@@ -120,6 +130,11 @@
                         </ul>
                     </nav>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <app-chart></app-chart>
             </div>
         </div>
     </div>

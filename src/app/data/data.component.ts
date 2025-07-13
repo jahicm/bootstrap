@@ -1,25 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Entry } from '../models/entry';
+import { Chart } from 'chart.js';
+import { ChartComponent } from '../chart/chart.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-data',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ChartComponent,FormsModule],
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.css']
 })
 export class DataComponent implements OnInit {
   entries: Entry[] = [];
-
   pagedEntries: Entry[] = [];
   currentPage = 1;
   pageSize = 3;
   totalPages = 0;
   totalPagesArray: number[] = [];
-  sortByValueLabel = 'Sort by Value';
-  sortByDateLabel = 'Sort by Date';
   filteredValues: Entry[] = [];
+  chart: any;
+ 
+  fromDate: string = ''; // Bind to from date input
+  toDate: string = ''; // Bind to to date input
+  chartLabels: string[] = [];
 
   constructor() {
     this.entries.push(
@@ -75,6 +80,11 @@ export class DataComponent implements OnInit {
     this.filteredValues = this.entries.slice(); // Initialize filtered values
     this.setupPagination();
     this.sortByValue('default');
+    const today = new Date();
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    this.fromDate = startOfMonth.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    // Set default toDate to today
+    this.toDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
   }
 
   setupPagination(): void {
@@ -142,5 +152,41 @@ export class DataComponent implements OnInit {
     }
     this.currentPage = 1;
     this.setupPagination();
+  }
+ generateGraph() {
+    
+    const filteredEntries = this.filteredValues.filter(entry => {
+      const entryDate = new Date(entry.dataEntryTime);
+      return entryDate >= new Date(this.fromDate) && entryDate <= new Date(this.toDate);
+    });
+
+    this.chartLabels = filteredEntries.map(entry => entry.dataEntryTime.toLocaleDateString());
+    const chartData = filteredEntries.map(entry => entry.value);
+
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    this.chart = new Chart('myChart', {
+      type: 'line',
+      data: {
+        labels: this.chartLabels,
+        datasets: [{
+          label: 'Values',
+          data: chartData,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
 }
