@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Entry } from '../models/entry';
 import { ChartComponent } from '../chart/chart.component';
 import { FormsModule } from '@angular/forms';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-data',
@@ -21,7 +24,7 @@ export class DataComponent implements OnInit {
   filteredValues: Entry[] = [];
   filteredGraphValues: Entry[] = [];
   chart: any;
-
+  user: any;
   fromDate: string = '';
   toDate: string = '';
   chartLabels: string[] = [];
@@ -29,6 +32,15 @@ export class DataComponent implements OnInit {
   measurementValueLabels: number[] = [];
 
   constructor(private datePipe: DatePipe) {
+
+    this.user = {
+      firstName: 'Mirza',
+      lastName: 'Jahic',
+      age: 42,
+      diabetesType: 'Type 2',
+      city: 'Schlieren',
+      unit: 'mg/dL'
+    };
     this.entries.push(
       {
         dataEntryTime: new Date('2023-10-01T10:00'),
@@ -133,8 +145,7 @@ export class DataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredValues = this.entries.slice(); // Initialize filtered values
-    this.setupPagination();
+    this.filteredValues = this.entries.slice();
     this.sortByValue('default');
   }
 
@@ -221,7 +232,61 @@ export class DataComponent implements OnInit {
     );
 
     this.measurementValueLabels = this.filteredGraphValues.map(entry => entry.sugarValue);
+  }
+  generatePDF(): void {
+    if (!this.fromDate || !this.toDate) {
+      alert('Please select both From Date and To Date');
+      return;
+    }
+
+    this.sortByDate('asc');
+    const fromDate = new Date(this.fromDate);
+    const toDate = new Date(this.toDate);
+    fromDate.setHours(0, 0, 0, 0);
+    toDate.setHours(23, 59, 59, 999);
+
+    console.log(`From Date: ${fromDate}, To Date: ${toDate}`);
+
+    this.filteredValues = this.entries.filter(entry => {
+      const entryDate = new Date(entry.measurementTime);
+      return entryDate >= fromDate && entryDate <= toDate;
+    });
+    const doc = new jsPDF();
 
 
+
+    // ➤ Add title
+    doc.setFontSize(16);
+    doc.text('Blood Sugar Report', 14, 15);
+
+    // ➤ Add user details
+    doc.setFontSize(11);
+    const details = [
+      `Name: ${this.user.firstName} ${this.user.lastName}`,
+      `Age: ${this.user.age}`,
+      `Diabetes Type: ${this.user.diabetesType}`,
+      `City: ${this.user.city}`
+    ];
+
+    details.forEach((line, index) => {
+      doc.text(line, 14, 25 + index * 6); // Line spacing
+    });
+
+    // ➤ Prepare table data (starting below user info)
+    const tableStartY = 25 + details.length * 6 + 5;
+
+    const tableData = this.filteredValues.map(entry => [
+      formatDate(entry.measurementTime, 'dd MMMM yyyy', 'en-US'),
+      entry.value + ' ' + entry.unit
+    ]);
+
+    autoTable(doc, {
+      startY: tableStartY,
+      head: [['Date', 'Value']],
+      body: tableData
+    });
+
+    // ➤ Save PDF
+    doc.save('blood-sugar-report.pdf');
   }
 }
