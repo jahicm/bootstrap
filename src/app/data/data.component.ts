@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { formatDate } from '@angular/common';
+import { Utility } from '../utils/utility';
 
 @Component({
   selector: 'app-data',
@@ -217,16 +218,11 @@ export class DataComponent implements OnInit {
   }
   generateGraph() {
 
-    const fromDate = new Date(this.fromDate);
-    const toDate = new Date(this.toDate);
-    fromDate.setHours(0, 0, 0, 0);
-    toDate.setHours(23, 59, 59, 999);
-
-    this.filteredGraphValues = this.entries.filter(entry => {
-      const entryDate = new Date(entry.measurementTime);
-      return entryDate >= fromDate && entryDate <= toDate;
-    });
-
+    if (!this.fromDate || !this.toDate) {
+      alert('Please select both From Date and To Date');
+      return;
+    }
+    this.filteredGraphValues = Utility.convertStringToDateAndFilter(this.entries, this.fromDate, this.toDate);
     this.measurementTimeLabels = this.filteredGraphValues.map(entry =>
       this.datePipe.transform(entry.measurementTime, 'dd/MM/yyyy') || ''
     );
@@ -240,21 +236,8 @@ export class DataComponent implements OnInit {
     }
 
     this.sortByDate('asc');
-    const fromDate = new Date(this.fromDate);
-    const toDate = new Date(this.toDate);
-    fromDate.setHours(0, 0, 0, 0);
-    toDate.setHours(23, 59, 59, 999);
-
-    console.log(`From Date: ${fromDate}, To Date: ${toDate}`);
-
-    this.filteredValues = this.entries.filter(entry => {
-      const entryDate = new Date(entry.measurementTime);
-      return entryDate >= fromDate && entryDate <= toDate;
-    });
+    this.filteredValues = Utility.convertStringToDateAndFilter(this.entries, this.fromDate, this.toDate);
     const doc = new jsPDF();
-
-
-
     // ➤ Add title
     doc.setFontSize(16);
     doc.text('Blood Sugar Report', 14, 15);
