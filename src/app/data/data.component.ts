@@ -1,14 +1,13 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Entry } from '../models/entry';
-import { Chart } from 'chart.js';
 import { ChartComponent } from '../chart/chart.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-data',
   standalone: true,
-  imports: [CommonModule, ChartComponent,FormsModule],
+  imports: [CommonModule, ChartComponent, FormsModule],
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.css']
 })
@@ -20,13 +19,16 @@ export class DataComponent implements OnInit {
   totalPages = 0;
   totalPagesArray: number[] = [];
   filteredValues: Entry[] = [];
+  filteredGraphValues: Entry[] = [];
   chart: any;
- 
-  fromDate: string = ''; // Bind to from date input
-  toDate: string = ''; // Bind to to date input
-  chartLabels: string[] = [];
 
-  constructor() {
+  fromDate: string = '';
+  toDate: string = '';
+  chartLabels: string[] = [];
+  measurementTimeLabels: string[] = [];
+  measurementValueLabels: number[] = [];
+
+  constructor(private datePipe: DatePipe) {
     this.entries.push(
       {
         dataEntryTime: new Date('2023-10-01T10:00'),
@@ -47,8 +49,8 @@ export class DataComponent implements OnInit {
         status: 'high'
       },
       {
-        dataEntryTime: new Date('2023-10-03T10:00'),
-        measurementTime: new Date('2023-10-03T09:00'),
+        dataEntryTime: new Date('2024-10-03T10:00'),
+        measurementTime: new Date('2024-10-03T09:00'),
         value: 90,
         sugarValue: 4.0,
         unit: 'mg/dL',
@@ -72,6 +74,60 @@ export class DataComponent implements OnInit {
         unit: 'mg/dL',
         referenceValue: 100,
         status: 'elevated'
+      },
+      {
+        dataEntryTime: new Date('2024-01-05T10:00'),
+        measurementTime: new Date('2024-01-05T09:00'),
+        value: 130,
+        sugarValue: 12.8,
+        unit: 'mg/dL',
+        referenceValue: 100,
+        status: 'elevated'
+      },
+      {
+        dataEntryTime: new Date('2024-05-05T10:00'),
+        measurementTime: new Date('2024-05-05T09:00'),
+        value: 130,
+        sugarValue: 11.8,
+        unit: 'mg/dL',
+        referenceValue: 100,
+        status: 'elevated'
+      },
+      {
+        dataEntryTime: new Date('2024-05-05T15:00'),
+        measurementTime: new Date('2024-05-05T09:00'),
+        value: 130,
+        sugarValue: 5.8,
+        unit: 'mg/dL',
+        referenceValue: 100,
+        status: 'elevated'
+      },
+      {
+        dataEntryTime: new Date('2024-05-05T20:00'),
+        measurementTime: new Date('2024-05-05T09:00'),
+        value: 130,
+        sugarValue: 7.8,
+        unit: 'mg/dL',
+        referenceValue: 100,
+        status: 'elevated'
+      },
+      {
+        dataEntryTime: new Date('2024-10-05T10:00'),
+        measurementTime: new Date('2024-10-05T09:00'),
+        value: 130,
+        sugarValue: 7.8,
+        unit: 'mg/dL',
+        referenceValue: 100,
+        status: 'elevated'
+      }
+      , {
+        dataEntryTime: new Date('2025-01-05T10:00'),
+        measurementTime: new Date('2025-01-05T09:00'),
+        value: 130,
+        sugarValue: 9.8,
+        unit: 'mg/dL',
+        referenceValue: 100,
+        status: 'elevated'
       }
     );
   }
@@ -80,11 +136,6 @@ export class DataComponent implements OnInit {
     this.filteredValues = this.entries.slice(); // Initialize filtered values
     this.setupPagination();
     this.sortByValue('default');
-    const today = new Date();
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    this.fromDate = startOfMonth.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-    // Set default toDate to today
-    this.toDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
   }
 
   setupPagination(): void {
@@ -153,40 +204,24 @@ export class DataComponent implements OnInit {
     this.currentPage = 1;
     this.setupPagination();
   }
- generateGraph() {
-    
-    const filteredEntries = this.filteredValues.filter(entry => {
-      const entryDate = new Date(entry.dataEntryTime);
-      return entryDate >= new Date(this.fromDate) && entryDate <= new Date(this.toDate);
+  generateGraph() {
+
+    const fromDate = new Date(this.fromDate);
+    const toDate = new Date(this.toDate);
+    fromDate.setHours(0, 0, 0, 0);
+    toDate.setHours(23, 59, 59, 999);
+
+    this.filteredGraphValues = this.entries.filter(entry => {
+      const entryDate = new Date(entry.measurementTime);
+      return entryDate >= fromDate && entryDate <= toDate;
     });
 
-    this.chartLabels = filteredEntries.map(entry => entry.dataEntryTime.toLocaleDateString());
-    const chartData = filteredEntries.map(entry => entry.value);
+    this.measurementTimeLabels = this.filteredGraphValues.map(entry =>
+      this.datePipe.transform(entry.measurementTime, 'dd/MM/yyyy') || ''
+    );
 
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    this.measurementValueLabels = this.filteredGraphValues.map(entry => entry.sugarValue);
 
-    this.chart = new Chart('myChart', {
-      type: 'line',
-      data: {
-        labels: this.chartLabels,
-        datasets: [{
-          label: 'Values',
-          data: chartData,
-          borderColor: 'rgba(75, 192, 192, 1)',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          fill: true
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+
   }
 }
