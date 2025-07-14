@@ -5,6 +5,7 @@ import { PaintingsComponent } from './paintings/paintings.component';
 import { DataFormComponent } from './reactiveform/dataform.component';
 import { ChartComponent } from './chart/chart.component';
 import { DataComponent } from './data/data.component';
+import { AnalyserComponent } from './analyser/analyser.component';
 
 
 export const routes: Routes = [
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'tdf', component: TdfComponent },
   { path: 'chart', component: ChartComponent },
   { path: 'data', component: DataComponent },
+  { path: 'analyser', component: AnalyserComponent },
   { path: '**', component: BaseComponent }
 
 ];

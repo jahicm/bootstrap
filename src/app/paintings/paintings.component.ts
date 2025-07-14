@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { CommonModule } from '@angular/common';
-import { PaintingserviceService } from '../services/paintingservice.service';
+import { PaintingService } from '../services/painting.service';
 
 @Component({
   selector: 'app-paintings',
@@ -14,7 +14,7 @@ export class PaintingsComponent implements OnInit {
   filteredProducts!: Product[];
   sortOrder: string = '';
   sortLabel: string = 'Select All';
-  constructor(private productService: PaintingserviceService) { }
+  constructor(private productService: PaintingService) { }
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe({

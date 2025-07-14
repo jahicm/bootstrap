@@ -7,7 +7,7 @@ import { Product } from '../models/product';
 @Injectable({
   providedIn: 'root'
 })
-export class PaintingserviceService {
+export class PaintingService {
 
   constructor(private httpClient: HttpClient) { }
 
